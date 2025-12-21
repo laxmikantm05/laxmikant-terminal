@@ -1,19 +1,22 @@
 #! /bin/bash
 
 
-print "Updating the System"
+echo "Updating the System"
+sleep 3
 
 sudo dnf update
 
 sleep 1
 
 print "Installing Starship"
+sleep 3
 
 curl -sS https://starship.rs/install.sh | sh
 
 sleep 1
 
-print "Installing Shell and Fastfetch"
+echo "Installing Shell and Fastfetch"
+sleep 3
 
 sudo dnf install fish fastfetch
 
@@ -31,8 +34,8 @@ sleep 3
 sudo chsh -s /bin/fish
 sleep 1
 
-print "Installing the Fonts"
-
+echo "Installing the Fonts"
+sleep 3
 cd ..
 sleep 1
 cd fonts/
