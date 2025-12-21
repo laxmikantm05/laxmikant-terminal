@@ -12,7 +12,7 @@ sudo dnf update -y
 sleep 1
 
 red_echo "Installing Starship"
-curl -sS starship.rs | sh
+curl -sS starship.rs/install.sh | sh
 
 sleep 1
 
