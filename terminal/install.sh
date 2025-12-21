@@ -43,8 +43,8 @@ sleep 1
 sudo cp -r * /usr/share/fonts
 
 echo "Installing Bootloader Theme..."
-$ git clone https://github.com/ChrisTitusTech/Top-5-Bootloader-Themes
-$ cd Top-5-Bootloader-Themes
-$ sudo ./install.sh
+git clone https://github.com/ChrisTitusTech/Top-5-Bootloader-Themes
+cd Top-5-Bootloader-Themes
+sudo ./install.sh
 
 echo "Voila !! your terminal has been set up and your fonts have been installed. Go ahead and re-login..."
