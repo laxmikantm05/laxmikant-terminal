@@ -229,14 +229,6 @@ function random_salutation
     echo $salutations[$index]
 end
 
-# Pre-execution animation
-function preexec --on-event fish_preexec
-    set -l salutation (random_salutation)
-    set_color cyan
-    tw "🤖 At your service, $salutation. Preparing to execute: $argv..."
-    set_color normal
-end
-
 # Post-execution animation
 function postexec --on-event fish_postexec
     if set -q __last_command_not_found
