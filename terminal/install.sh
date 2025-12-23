@@ -73,7 +73,7 @@ git clone https://github.com/ChrisTitusTech/Top-5-Bootloader-Themes
 cd Top-5-Bootloader-Themes
 sudo ./install.sh
 
-sudo dnf group install gnome-desktop -y
+sudo dnf group install gnome-desktop
 sudo systemctl set-default graphical.target
 sudo systemctl enable gdm
 
