@@ -41,11 +41,11 @@ sleep 3
 
 sudo dnf install fish fastfetch -y
 
-mkdir ~/.config
+mkdir -p ~/.config
 
 cp -r * ~/.config
 
-sudo mkdir /root/.config/
+sudo mkdir -p /root/.config/
 sudo cp -r * /root/.config/
 
 chsh -s /bin/fish
@@ -67,8 +67,21 @@ sleep 1
 cd fonts/
 sleep 1
 sudo cp -r * /usr/share/fonts
+sudo fc-cache -fv
 
-echo "Installing Bootloader Theme..."
+echo " _____ _                         _
+|_   _| |__   ___ _ __ ___   ___(_)_ __   __ _
+  | | | '_ \ / _ \ '_ ` _ \ / _ \ | '_ \ / _` |
+  | | | | | |  __/ | | | | |  __/ | | | | (_| |
+  |_| |_| |_|\___|_| |_| |_|\___|_|_| |_|\__, |
+                                         |___/
+ ____              _   _                 _
+| __ )  ___   ___ | |_| | ___   __ _  __| | ___ _ __
+|  _ \ / _ \ / _ \| __| |/ _ \ / _` |/ _` |/ _ \ '__|
+| |_) | (_) | (_) | |_| | (_) | (_| | (_| |  __/ | _ _ _
+|____/ \___/ \___/ \__|_|\___/ \__,_|\__,_|\___|_|(_|_|_)"
+
+
 git clone https://github.com/ChrisTitusTech/Top-5-Bootloader-Themes
 cd Top-5-Bootloader-Themes
 sudo ./install.sh
