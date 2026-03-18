@@ -2,13 +2,13 @@
 # =============================================================================
 #  Fancy Desktop Rice Script for Fedora + GNOME
 #  modular · gum-powered · cyberpunk flavored
-#  deps: gum, figlet, lolcat
+#  deps: gum, figlet
 # =============================================================================
-
+ 
 # ─────────────────────────────────────────────
 #  CONFIG
 # ─────────────────────────────────────────────
-
+ 
 EXTENSIONS=(
     "arcmenu@arcmenu.com"
     "blur-my-shell@aunetx"
@@ -19,28 +19,27 @@ EXTENSIONS=(
     "openbar@neuromorph"
     "kiwi@kemma"
 )
-
+ 
 # Paths are relative to this script's location — no hardcoded ~/fancy-desktop
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ASSETS_DIR="$SCRIPT_DIR/../../assets"
 DOTFILES_DIR="$ASSETS_DIR/dotfiles"
 FONTS_DIR="$ASSETS_DIR/fonts"
-
-# DCONF_BACKUP="$ASSETS_DIR/dconf-backup.ini"
-
+DCONF_BACKUP="$ASSETS_DIR/gnome-settings.dconf"
+ 
 # ─────────────────────────────────────────────
 #  COLORS
 # ─────────────────────────────────────────────
-
+ 
 CYAN='\033[38;5;51m'
 DIM='\033[2m'
 RESET='\033[0m'
 BOLD='\033[1m'
-
+ 
 # ─────────────────────────────────────────────
 #  HELPERS
 # ─────────────────────────────────────────────
-
+ 
 section() {
     gum style \
         --foreground="#00eeff" \
@@ -50,12 +49,12 @@ section() {
         --margin="1 0" \
         "⚡ $1"
 }
-
+ 
 success() { gum style --foreground="#00c878" "  ✓ $1"; }
 skip()    { gum style --foreground="#888888" "  ─ skipping: $1"; }
 fail()    { gum style --foreground="#ff2d5a" "  ✗ $1"; }
 info()    { gum style --foreground="#3399ff" "  → $1"; }
-
+ 
 confirm() {
     gum confirm "$1" \
         --prompt.foreground="#00eeff" \
@@ -63,7 +62,7 @@ confirm() {
         --selected.foreground="#000000" \
         --unselected.foreground="#888888"
 }
-
+ 
 run_spin() {
     local title="$1"; shift
     gum spin \
@@ -73,19 +72,19 @@ run_spin() {
         --title=" $title" \
         -- "$@"
 }
-
+ 
 run_with_output() {
     local title="$1"; shift
-
+ 
     echo ""
     echo -e "  ${CYAN}⠿  ${title}${RESET}"
     echo -e "  ${DIM}──────────────────────────────────────${RESET}"
-
+ 
     "$@" 2>&1 | while IFS= read -r line; do
         echo -e "  ${DIM}${line}${RESET}"
     done
     local cmd_exit=${PIPESTATUS[0]}
-
+ 
     echo -e "  ${DIM}──────────────────────────────────────${RESET}"
     if [ "$cmd_exit" -eq 0 ]; then
         success "$title done"
@@ -95,7 +94,7 @@ run_with_output() {
     echo ""
     return "$cmd_exit"
 }
-
+ 
 run_direct() {
     local title="$1"; shift
     gum style \
@@ -115,27 +114,27 @@ run_direct() {
     fi
     return "$exit_code"
 }
-
+ 
 # ─────────────────────────────────────────────
 #  SUDO — cache credentials upfront
 # ─────────────────────────────────────────────
-
+ 
 prime_sudo() {
     gum style --foreground="#00eeff" "  ⚡ sudo access needed — enter your password:"
     sudo -v
     while true; do sudo -n true; sleep 50; kill -0 "$$" || exit; done 2>/dev/null &
     SUDO_KEEPALIVE_PID=$!
 }
-
+ 
 cleanup() {
     kill "$SUDO_KEEPALIVE_PID" 2>/dev/null
 }
 trap cleanup EXIT
-
+ 
 # ─────────────────────────────────────────────
 #  GUARD — install gum if missing
 # ─────────────────────────────────────────────
-
+ 
 install_gum() {
     if ! command -v gum &>/dev/null; then
         echo -e "${CYAN}  installing gum first...${RESET}"
@@ -148,11 +147,11 @@ gpgkey=https://repo.charm.sh/yum/gpg.key' | sudo tee /etc/yum.repos.d/charm.repo
         sudo dnf install -y gum
     fi
 }
-
+ 
 # =============================================================================
 #  MODULES
 # =============================================================================
-
+ 
 module_system_update() {
     section "System Update"
     if confirm "Upgrade system and install all dependencies?"; then
@@ -162,35 +161,35 @@ module_system_update() {
             gnome-menus \
             python3-gobject \
             pipx wlogout \
-            figlet lolcat
+            figlet
         success "system updated and dependencies installed"
     else
         skip "system update"
     fi
 }
-
+ 
 # ─────────────────────────────────────────────
 module_shell() {
     section "Shell Setup"
     if confirm "Set fish as your default shell?"; then
-
+ 
         FISH_PATH="$(command -v fish 2>/dev/null)"
         if [[ -z "$FISH_PATH" ]]; then
             for p in /usr/bin/fish /usr/local/bin/fish /bin/fish; do
                 [[ -x "$p" ]] && FISH_PATH="$p" && break
             done
         fi
-
+ 
         if [[ -z "$FISH_PATH" ]]; then
             fail "fish not found — is it installed?"
             return 1
         fi
-
+ 
         grep -qxF "$FISH_PATH" /etc/shells || echo "$FISH_PATH" | sudo tee -a /etc/shells > /dev/null
-
+ 
         run_direct "setting fish as default shell" chsh -s "$FISH_PATH"
         success "fish set as default for $USER"
-
+ 
         if confirm "Also set fish as default for root?"; then
             run_direct "setting fish for root" sudo chsh -s "$FISH_PATH" root
             success "fish set as default for root"
@@ -201,7 +200,7 @@ module_shell() {
         skip "shell setup"
     fi
 }
-
+ 
 # ─────────────────────────────────────────────
 module_dotfiles() {
     section "Dotfiles + Starship"
@@ -218,7 +217,7 @@ module_dotfiles() {
         skip "dotfiles + starship"
     fi
 }
-
+ 
 # ─────────────────────────────────────────────
 module_fonts() {
     section "Fonts"
@@ -231,7 +230,7 @@ module_fonts() {
         skip "fonts"
     fi
 }
-
+ 
 # ─────────────────────────────────────────────
 module_extensions() {
     section "GNOME Extensions"
@@ -241,21 +240,21 @@ module_extensions() {
                 pipx install gnome-extensions-cli
             export PATH="$PATH:$HOME/.local/bin"
         fi
-
+ 
         for ext in "${EXTENSIONS[@]}"; do
             run_with_output "installing $ext" gext install "$ext"
         done
-
+ 
         for ext in "${EXTENSIONS[@]}"; do
             run_spin "enabling $ext" gext enable "$ext" 2>/dev/null
         done
-
+ 
         success "all extensions installed and enabled"
     else
         skip "gnome extensions"
     fi
 }
-
+ 
 # ─────────────────────────────────────────────
 module_bootloader() {
     section "Bootloader Theme"
@@ -272,27 +271,36 @@ module_bootloader() {
         skip "bootloader"
     fi
 }
-
+ 
 # ─────────────────────────────────────────────
-# module_dconf() {
-#     section "Dconf Settings"
-#     if confirm "Load dconf backup?"; then
-#         run_spin "loading dconf" bash -c "dconf load / < '$DCONF_BACKUP'"
-#         success "dconf settings loaded"
-#     else
-#         skip "dconf"
-#     fi
-# }
-
+module_desktop() {
+    section "Getting Your Desktop Ready"
+    if confirm "Apply dconf settings and install cursor theme?"; then
+        run_spin "loading dconf settings" \
+            bash -c "dconf load / < '$DCONF_BACKUP'"
+        success "dconf settings applied"
+ 
+        run_with_output "enabling peterwu/rendezvous copr" \
+            sudo dnf copr enable -y peterwu/rendezvous
+        run_with_output "installing bibata-cursor-themes" \
+            sudo dnf install -y bibata-cursor-themes
+        run_spin "setting Bibata-Modern-Ice as default cursor" \
+            gsettings set org.gnome.desktop.interface cursor-theme 'Bibata-Modern-Ice'
+        success "cursor theme installed and applied"
+    else
+        skip "desktop settings"
+    fi
+}
+ 
 # ─────────────────────────────────────────────
 module_reboot() {
     section "All Done!"
-
+ 
     figlet -f standard "Fancy Desktop" | while IFS= read -r line; do
         echo -e "\033[38;5;183m${line}${RESET}"
     done
     echo ""
-
+ 
     gum style \
         --foreground="#00eeff" \
         --border=double \
@@ -303,7 +311,7 @@ module_reboot() {
         "🎉 rice applied successfully" \
         "" \
         "log out or reboot for everything to take effect"
-
+ 
     if confirm "Reboot now?"; then
         gum style --foreground="#ff2d5a" "  rebooting... see you on the other side!"
         sleep 1
@@ -312,36 +320,36 @@ module_reboot() {
         gum style --foreground="#888888" "  okay! log out and back in when ready."
     fi
 }
-
+ 
 # =============================================================================
 #  MAIN
 # =============================================================================
-
+ 
 main() {
     clear
     install_gum
-
+ 
     figlet -f standard "Fancy Desktop" | while IFS= read -r line; do
         echo -e "\033[38;5;183m${line}${RESET}"
     done
     echo ""
-
+ 
     gum style \
         --foreground="#888888" \
         --margin="0 2" \
         "fedora · gnome · cyberpunk edition"
     echo ""
-
+ 
     prime_sudo
-
+ 
     module_system_update
     module_shell
     module_dotfiles
     module_fonts
     module_extensions
     module_bootloader
-    # module_dconf
+    module_desktop
     module_reboot
 }
-
+ 
 main
