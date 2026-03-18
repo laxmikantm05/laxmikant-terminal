@@ -16,6 +16,7 @@ EXTENSIONS=(
     "dash2dock-lite@icedman.github.com"
     "burn-my-windows@schneegans.github.com"
     "compiz-windows-effect@hermes83.github.com"
+    "openbar@neuromorph"
     "kiwi@kemma"
 )
 
