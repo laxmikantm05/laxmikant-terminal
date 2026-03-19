@@ -10,7 +10,7 @@ Fancy Desktop applies my personal GNOME customisations — theme, keybindings, a
 
 Make sure the following are available on your system before running:
 
-- **OS:** Debian-based distro only (Ubuntu, Pop!_OS, etc.)
+- **OS:** Fedora and Debian based distros with a working GNOME Desktop
 - `dconf`
 - `gnome-extensions`
 - A working GNOME desktop session
