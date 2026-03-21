@@ -9,6 +9,7 @@ if test -d ~/.local/bin
         set -p PATH ~/.local/bin
     end
 end
+set -g fish_ambiguous_width 2
 
 
 
