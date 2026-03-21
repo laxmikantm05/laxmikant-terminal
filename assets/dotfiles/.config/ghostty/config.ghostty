@@ -1,8 +1,9 @@
-# ╔══════════════════════════════════════════════════════════════╗
-# ║         Ghostty config — GNOME Wayland · Fancy Desktop                              ║
-# ║         laxmikant@LA17                                                              ║
-# ║         ~/.config/ghostty/config                                                    ║
-# ╚══════════════════════════════════════════════════════════════╝
+# ╔═════════════════════════════════════════════════════════════╗
+# ║         Ghostty config — GNOME Wayland · Fancy Desktop                             ║
+# ║         laxmikant@LA17                                                             ║
+# ║         ~/.config/ghostty/config                                                   ║
+# ╚═════════════════════════════════════════════════════════════╝
+
 # ─── Font ────────────────────────────────────────────────────────
 font-family = JetBrainsMono Nerd Font
 font-size = 12
@@ -11,17 +12,17 @@ font-feature = +liga
 font-feature = +zero
 
 # ─── Cursor ──────────────────────────────────────────────────────
-cursor-color = #ffffff
-cursor-text = #1a1b26
+cursor-color = #e8e8e8
+cursor-text = #0e0e0e
 cursor-style = block
 cursor-style-blink = true
 
 # ─── Colors ──────────────────────────────────────────────────────
 # Tokyo Night dark background, clean elementary-style foreground
-background = #1a1b26
-foreground = #f8f8f2
+background = #0e0e0e
+foreground = #e8e8e8
 
-selection-background = #3d59a1
+selection-background = #444444
 selection-foreground = #ffffff
 
 # Black
